@@ -1,0 +1,13 @@
+[package]
+name = "anchor-solend"
+authors = ["Rohan Kapur <kapurrohan56@gmail.com>"]
+version = "0.1.0"
+edition = "2018"
+description = "Anchor CPI client for the Solend protocol"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anchor-lang = "0.13.2"
+solana-program = "=1.7.8"
+spl-token-lending = {git = "https://github.com/solendprotocol/solana-program-library", version = "0.1.0", features = ["no-entrypoint"]}
