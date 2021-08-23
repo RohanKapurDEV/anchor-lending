@@ -1,1 +1,1 @@
-pub mod solend;
+pub mod cpi;
