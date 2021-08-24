@@ -58,6 +58,25 @@ pub fn redeem_reserve_collateral<'info>(
     Ok(())
 }
 
+pub fn refresh_reserve<'info>(
+    ctx: CpiContext<'_, '_, '_, 'info, RefreshReserve<'info>>,
+) -> ProgramResult {
+    let ix = spl_token_lending::instruction::refresh_reserve(
+        solend_devnet::ID,
+        *ctx.accounts.reserve.key,
+        *ctx.accounts.pyth_reserve_liquidity_oracle.key,
+        *ctx.accounts.switchboard_reserve_liquidity_oracle.key,
+    );
+
+    solana_program::program::invoke_signed(
+        &ix,
+        &ToAccountInfos::to_account_infos(&ctx),
+        &ctx.signer_seeds,
+    )?;
+
+    Ok(())
+}
+
 #[derive(Accounts)]
 pub struct DepositReserveLiquidity<'info> {
     // Token account for asset to deposit into reserve
