@@ -33,6 +33,31 @@ pub fn deposit_reserve_liquidity<'info>(
     Ok(())
 }
 
+pub fn redeem_reserve_collateral<'info>(
+    ctx: CpiContext<'_, '_, '_, 'info, RedeemReserveCollateral<'info>>,
+    collateral_amount: u64,
+) -> ProgramResult {
+    let ix = spl_token_lending::instruction::redeem_reserve_collateral(
+        solend_devnet::ID,
+        collateral_amount,
+        *ctx.accounts.source_collateral.key,
+        *ctx.accounts.destination_liquidity.key,
+        *ctx.accounts.refreshed_reserve_account.key,
+        *ctx.accounts.reserve_collateral_mint.key,
+        *ctx.accounts.reserve_liquidity.key,
+        *ctx.accounts.lending_market.key,
+        *ctx.accounts.lending_market_authority.key,
+    );
+
+    solana_program::program::invoke_signed(
+        &ix,
+        &ToAccountInfos::to_account_infos(&ctx),
+        &ctx.signer_seeds,
+    )?;
+
+    Ok(())
+}
+
 #[derive(Accounts)]
 pub struct DepositReserveLiquidity<'info> {
     // Token account for asset to deposit into reserve
@@ -64,7 +89,9 @@ pub struct RedeemReserveCollateral<'info> {
     // Destination liquidity token account
     pub destination_liquidity: AccountInfo<'info>,
     // Refreshed reserve account
-    pub reserve_account: AccountInfo<'info>,
+    pub refreshed_reserve_account: AccountInfo<'info>,
+    // Reserve collateral mint account
+    pub reserve_collateral_mint: AccountInfo<'info>,
     // Reserve liquidity supply SPL Token account.
     pub reserve_liquidity: AccountInfo<'info>,
     // Lending market account
