@@ -139,6 +139,42 @@ pub struct RefreshReserve<'info> {
     pub clock: AccountInfo<'info>,
 }
 
+/// Accounts expected by this instruction:
+///
+///   0. `[writable]` Source liquidity token account.
+///                     Minted by reserve liquidity mint.
+///                     Must match the reserve liquidity supply.
+///   1. `[writable]` Destination liquidity token account.
+///                     Minted by reserve liquidity mint.
+///   2. `[writable]` Reserve account.
+///   3. `[writable]` Flash loan fee receiver account.
+///                     Must match the reserve liquidity fee receiver.
+///   4. `[writable]` Host fee receiver.
+///   5. `[]` Lending market account.
+///   6. `[]` Derived lending market authority.
+///   7. `[]` Token program id.
+///   8. `[]` Flash loan receiver program id.
+///             Must implement an instruction that has tag of 0 and a signature of `(amount: u64)`
+///             This instruction must return the amount to the source liquidity account.
+///   .. `[any]` Additional accounts expected by the receiving program's `ReceiveFlashLoan` instruction.
+///
+///   The flash loan receiver program that is to be invoked should contain an instruction with
+///   tag `0` and accept the total amount (including fee) that needs to be returned back after
+///   its execution has completed.
+///
+///   Flash loan receiver should have an instruction with the following signature:
+///
+///   0. `[writable]` Source liquidity (matching the destination from above).
+///   1. `[writable]` Destination liquidity (matching the source from above).
+///   2. `[]` Token program id
+///   .. `[any]` Additional accounts provided to the lending program's `FlashLoan` instruction above.
+///   ReceiveFlashLoan {
+///       // Amount that must be repaid by the receiver program
+///       amount: u64
+///   }
+#[derive(Accounts)]
+pub struct FlashLoan {}
+
 // Mainnet ID of the Solend protocol program
 pub mod solend_mainnet {
     solana_program::declare_id!("So1endDq2YkqhipRh3WViPa8hdiSpxWy6z3Z6tMCpAo");
