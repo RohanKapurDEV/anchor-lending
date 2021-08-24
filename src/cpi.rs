@@ -58,7 +58,26 @@ pub struct DepositReserveLiquidity<'info> {
 }
 
 #[derive(Accounts)]
-pub struct RedeemReserveCollateral {}
+pub struct RedeemReserveCollateral<'info> {
+    // Source token account for reserve collateral token
+    pub source_collateral: AccountInfo<'info>,
+    // Destination liquidity token account
+    pub destination_liquidity: AccountInfo<'info>,
+    // Refreshed reserve account
+    pub reserve_account: AccountInfo<'info>,
+    // Reserve liquidity supply SPL Token account.
+    pub reserve_liquidity: AccountInfo<'info>,
+    // Lending market account
+    pub lending_market: AccountInfo<'info>,
+    // Lending market authority - PDA
+    pub lending_market_authority: AccountInfo<'info>,
+    // User transfer authority
+    pub user_transfer_authority: AccountInfo<'info>,
+    // Clock
+    pub clock: AccountInfo<'info>,
+    // Token program ID
+    pub token_program_id: AccountInfo<'info>,
+}
 
 // Mainnet ID of the Solend protocol program
 pub mod solend_mainnet {
