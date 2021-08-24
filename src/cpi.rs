@@ -106,6 +106,20 @@ pub struct RedeemReserveCollateral<'info> {
     pub token_program_id: AccountInfo<'info>,
 }
 
+#[derive(Accounts)]
+pub struct RefreshReserve<'info> {
+    // Reserve account
+    pub reserve: AccountInfo<'info>,
+    // Pyth reserve liquidity oracle
+    // Must be the pyth price account specified in InitReserve
+    pub pyth_reserve_liquidity_oracle: AccountInfo<'info>,
+    // Switchboard Reserve liquidity oracle account
+    // Must be the switchboard price account specified in InitReserve
+    pub switchboard_reserve_liquidity_oracle: AccountInfo<'info>,
+    // Clock
+    pub clock: AccountInfo<'info>,
+}
+
 // Mainnet ID of the Solend protocol program
 pub mod solend_mainnet {
     solana_program::declare_id!("So1endDq2YkqhipRh3WViPa8hdiSpxWy6z3Z6tMCpAo");
@@ -114,9 +128,4 @@ pub mod solend_mainnet {
 // Devnet ID of the Solend protocol program
 pub mod solend_devnet {
     solana_program::declare_id!("ALend7Ketfx5bxh6ghsCDXAoDrhvEmsXT3cynB6aPLgx");
-}
-
-// Localnet ID of the Solend protocol program
-pub mod solend_localnet {
-    // solana_program::declare_id!("Solenddndndndndndndndndnnddndndndndndndnndn");
 }
