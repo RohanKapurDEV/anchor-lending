@@ -85,7 +85,7 @@ pub fn flash_loan<'info>(
     let receiver_accounts: Vec<AccountMeta> = Vec::new();
 
     // Write logic to form AccountMeta for all receiver accounts and
-    // push into receiver_accounts
+    // push into receiver_accounts,
 
     let ix = spl_token_lending::instruction::flash_loan(
         solend_devnet::ID,
@@ -224,7 +224,7 @@ pub struct FlashLoan<'info> {
     pub token_program_id: AccountInfo<'info>,
     // Flash loan program receiver ID
     pub flask_loan_receiver: AccountInfo<'info>,
-    // OPTIONAL: ADD ANY ADDITIONAL ACCOUNTS THAT MAY BE EXPECTED BY THE
+    // ADD ANY ADDITIONAL ACCOUNTS THAT MAY BE EXPECTED BY THE
     // RECEIVER'S FLASHLOAN INSTRUCTION
 }
 
