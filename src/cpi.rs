@@ -5,6 +5,7 @@ use anchor_lang::solana_program::entrypoint::ProgramResult;
 // use anchor_lang::solana_program::program_pack::Pack;
 // use anchor_lang::solana_program::pubkey::Pubkey;
 use anchor_lang::{Accounts, CpiContext, ToAccountInfos};
+use solana_program::instruction::AccountMeta;
 // use std::ops::Deref;
 
 pub fn deposit_reserve_liquidity<'info>(
@@ -72,6 +73,37 @@ pub fn refresh_reserve<'info>(
         &ix,
         &ToAccountInfos::to_account_infos(&ctx),
         &ctx.signer_seeds,
+    )?;
+
+    Ok(())
+}
+
+pub fn flash_loan<'info>(
+    ctx: CpiContext<'_, '_, '_, 'info, FlashLoan<'info>>,
+    amount: u64,
+) -> ProgramResult {
+    let receiver_accounts: Vec<AccountMeta> = Vec::new();
+
+    // Write logic to form AccountMeta for all receiver accounts and
+    // push into receiver_accounts
+
+    let ix = spl_token_lending::instruction::flash_loan(
+        solend_devnet::ID,
+        amount,
+        *ctx.accounts.source_liquidity.key,
+        *ctx.accounts.destination_liquidity.key,
+        *ctx.accounts.reserve.key,
+        *ctx.accounts.flash_loan_fee_receiver.key,
+        *ctx.accounts.host_fee_receiver.key,
+        *ctx.accounts.lending_market.key,
+        *ctx.accounts.flask_loan_receiver.key,
+        receiver_accounts,
+    );
+
+    solana_program::program::invoke_signed(
+        &ix,
+        &ToAccountInfos::to_account_infos(&ctx),
+        ctx.signer_seeds,
     )?;
 
     Ok(())
@@ -173,7 +205,28 @@ pub struct RefreshReserve<'info> {
 ///       amount: u64
 ///   }
 #[derive(Accounts)]
-pub struct FlashLoan {}
+pub struct FlashLoan<'info> {
+    // Source liquidity token account
+    pub source_liquidity: AccountInfo<'info>,
+    // Destination liquidity token account - same mint as source liquidity
+    pub destination_liquidity: AccountInfo<'info>,
+    // Reserve account
+    pub reserve: AccountInfo<'info>,
+    // Flash loan fee receiver account
+    pub flash_loan_fee_receiver: AccountInfo<'info>,
+    // Host fee receiver
+    pub host_fee_receiver: AccountInfo<'info>,
+    // Lending market account
+    pub lending_market: AccountInfo<'info>,
+    // Derived lending market authority - PDA
+    pub derived_lending_market_authority: AccountInfo<'info>,
+    // Token program ID
+    pub token_program_id: AccountInfo<'info>,
+    // Flash loan program receiver ID
+    pub flask_loan_receiver: AccountInfo<'info>,
+    // OPTIONAL: ADD ANY ADDITIONAL ACCOUNTS THAT MAY BE EXPECTED BY THE
+    // RECEIVER'S FLASHLOAN INSTRUCTION
+}
 
 // Mainnet ID of the Solend protocol program
 pub mod solend_mainnet {
