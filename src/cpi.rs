@@ -228,6 +228,19 @@ pub struct FlashLoan<'info> {
     // RECEIVER'S FLASHLOAN INSTRUCTION
 }
 
+// Helper function to convert AccountInfo to AccountMeta
+pub fn account_info_to_meta<'info>(
+    acct: AccountInfo<'info>,
+    is_signer: bool,
+    is_writable: bool,
+) -> AccountMeta {
+    AccountMeta {
+        pubkey: *acct.key,
+        is_signer: is_signer,
+        is_writable: is_writable,
+    }
+}
+
 // Mainnet ID of the Solend protocol program
 pub mod solend_mainnet {
     solana_program::declare_id!("So1endDq2YkqhipRh3WViPa8hdiSpxWy6z3Z6tMCpAo");
