@@ -1,7 +1,7 @@
 [package]
 name = "anchor-lending"
 authors = ["Rohan Kapur <kapurrohan56@gmail.com>"]
-version = "0.1.0"
+version = "0.2.0"
 edition = "2018"
 description = "Anchor CPI client for the lending programs"
 
