@@ -254,3 +254,7 @@ pub mod solend_devnet {
 pub mod devnet_lending_market {
     solana_program::declare_id!("GvjoVKNjBvQcFaSKUW1gTE7DxhSpjHbE69umVR5nPuQp");
 }
+
+pub mod mainnet_lending_market {
+    solana_program::declare_id!("4UpD2fh7xH3VP9QQaXtsS1YY3bxzWhtfpks7FatyKvdY");
+}
