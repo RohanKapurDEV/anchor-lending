@@ -144,7 +144,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "anchor-solend"
+name = "anchor-lending"
 version = "0.1.0"
 dependencies = [
  "anchor-lang",

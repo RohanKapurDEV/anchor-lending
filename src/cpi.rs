@@ -13,8 +13,7 @@ pub fn deposit_reserve_liquidity<'info>(
     liquidity_amount: u64,
 ) -> ProgramResult {
     let ix = spl_token_lending::instruction::deposit_reserve_liquidity(
-        // DEVNET, CHANGE IF USING MAINNET
-        solend_devnet::ID,
+        *ctx.accounts.lending_program.key,
         liquidity_amount,
         *ctx.accounts.source_liquidity.key,
         *ctx.accounts.destination_collateral_account.key,
@@ -39,7 +38,7 @@ pub fn redeem_reserve_collateral<'info>(
     collateral_amount: u64,
 ) -> ProgramResult {
     let ix = spl_token_lending::instruction::redeem_reserve_collateral(
-        solend_devnet::ID,
+        *ctx.accounts.lending_program.key,
         collateral_amount,
         *ctx.accounts.source_collateral.key,
         *ctx.accounts.destination_liquidity.key,
@@ -63,7 +62,7 @@ pub fn refresh_reserve<'info>(
     ctx: CpiContext<'_, '_, '_, 'info, RefreshReserve<'info>>,
 ) -> ProgramResult {
     let ix = spl_token_lending::instruction::refresh_reserve(
-        solend_devnet::ID,
+        *ctx.accounts.lending_program.key,
         *ctx.accounts.reserve.key,
         *ctx.accounts.pyth_reserve_liquidity_oracle.key,
         *ctx.accounts.switchboard_reserve_liquidity_oracle.key,
@@ -88,7 +87,7 @@ pub fn flash_loan<'info>(
     // push into receiver_accounts,
 
     let ix = spl_token_lending::instruction::flash_loan(
-        solend_devnet::ID,
+        *ctx.accounts.lending_program.key,
         amount,
         *ctx.accounts.source_liquidity.key,
         *ctx.accounts.destination_liquidity.key,
@@ -111,6 +110,8 @@ pub fn flash_loan<'info>(
 
 #[derive(Accounts)]
 pub struct DepositReserveLiquidity<'info> {
+    // Lending program
+    pub lending_program: AccountInfo<'info>,
     // Token account for asset to deposit into reserve
     pub source_liquidity: AccountInfo<'info>,
     // Token account for reserve collateral token
@@ -135,6 +136,8 @@ pub struct DepositReserveLiquidity<'info> {
 
 #[derive(Accounts)]
 pub struct RedeemReserveCollateral<'info> {
+    // Lending program
+    pub lending_program: AccountInfo<'info>,
     // Source token account for reserve collateral token
     pub source_collateral: AccountInfo<'info>,
     // Destination liquidity token account
@@ -159,6 +162,8 @@ pub struct RedeemReserveCollateral<'info> {
 
 #[derive(Accounts)]
 pub struct RefreshReserve<'info> {
+    // Lending program
+    pub lending_program: AccountInfo<'info>,
     // Reserve account
     pub reserve: AccountInfo<'info>,
     // Pyth reserve liquidity oracle
@@ -206,6 +211,8 @@ pub struct RefreshReserve<'info> {
 ///   }
 #[derive(Accounts)]
 pub struct FlashLoan<'info> {
+    // Lending program
+    pub lending_program: AccountInfo<'info>,
     // Source liquidity token account
     pub source_liquidity: AccountInfo<'info>,
     // Destination liquidity token account - same mint as source liquidity
@@ -239,22 +246,4 @@ pub fn account_info_to_meta<'info>(
         is_signer: is_signer,
         is_writable: is_writable,
     }
-}
-
-// Mainnet ID of the Solend protocol program
-pub mod solend_mainnet {
-    solana_program::declare_id!("So1endDq2YkqhipRh3WViPa8hdiSpxWy6z3Z6tMCpAo");
-}
-
-// Devnet ID of the Solend protocol program
-pub mod solend_devnet {
-    solana_program::declare_id!("ALend7Ketfx5bxh6ghsCDXAoDrhvEmsXT3cynB6aPLgx");
-}
-
-pub mod devnet_lending_market {
-    solana_program::declare_id!("GvjoVKNjBvQcFaSKUW1gTE7DxhSpjHbE69umVR5nPuQp");
-}
-
-pub mod mainnet_lending_market {
-    solana_program::declare_id!("4UpD2fh7xH3VP9QQaXtsS1YY3bxzWhtfpks7FatyKvdY");
 }

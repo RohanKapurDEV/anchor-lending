@@ -1,9 +1,9 @@
 [package]
-name = "anchor-solend"
+name = "anchor-lending"
 authors = ["Rohan Kapur <kapurrohan56@gmail.com>"]
 version = "0.1.0"
 edition = "2018"
-description = "Anchor CPI client for the Solend protocol"
+description = "Anchor CPI client for the lending programs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
