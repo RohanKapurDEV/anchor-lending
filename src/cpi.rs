@@ -1,12 +1,8 @@
 // use anchor_lang::solana_program;
 use anchor_lang::solana_program::account_info::AccountInfo;
 use anchor_lang::solana_program::entrypoint::ProgramResult;
-// use anchor_lang::solana_program::program_error::ProgramError;
-// use anchor_lang::solana_program::program_pack::Pack;
-// use anchor_lang::solana_program::pubkey::Pubkey;
 use anchor_lang::{Accounts, CpiContext, ToAccountInfos};
 use solana_program::instruction::AccountMeta;
-// use std::ops::Deref;
 
 pub fn deposit_reserve_liquidity<'info>(
     ctx: CpiContext<'_, '_, '_, 'info, DepositReserveLiquidity<'info>>,
