@@ -1,13 +1,13 @@
 [package]
 name = "anchor-lending"
 authors = ["Rohan Kapur <kapurrohan56@gmail.com>"]
-version = "0.2.1"
+version = "0.2.2"
 edition = "2018"
 description = "Anchor CPI client for the lending programs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anchor-lang = "0.16.0"
+anchor-lang = "0.16.2"
 solana-program = "1.7.11"
 spl-token-lending = { git = "https://github.com/solendprotocol/solana-program-library", version = "0.1.0", features = ["no-entrypoint"] }
